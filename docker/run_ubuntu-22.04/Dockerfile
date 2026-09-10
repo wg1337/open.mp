@@ -7,6 +7,7 @@ RUN \
         wget \
         libstdc++6:i386 \
         tzdata \
+        python3 \
         openssl \
         libssl3 \
         libssl-dev \
