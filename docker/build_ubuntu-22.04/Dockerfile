@@ -1,6 +1,9 @@
 FROM ubuntu:22.04
 ARG TARGET_CONTAINER_BUILD_ARCH
 
+# Fix for some rootless builders
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Base layer
 RUN apt-get update && \
     apt-get install -y \
@@ -39,7 +42,7 @@ USER user
 
 ENV CC=/usr/bin/clang-11 \
     CXX=/usr/bin/clang++-11 \
-    PATH=~/.local/bin:${PATH}
+    PATH=/home/user/.local/bin:${PATH}
 
 COPY docker-entrypoint.sh /
 CMD /docker-entrypoint.sh
