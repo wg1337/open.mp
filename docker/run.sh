@@ -8,7 +8,10 @@
 [[ -z "$UBUNTU_VERSION" ]] \
 && ubuntu_version=22.04 \
 || ubuntu_version="$UBUNTU_VERSION"
-
+# Available options: [linux/amd64], linux/arm64, linux/arm
+[[ -z "$TARGET_CONTAINER_PLATFORM" ]] \
+&& container_platform="linux/amd64" \
+|| container_platform="$TARGET_CONTAINER_PLATFORM"
 
 omp_path="build/Output/${config}/Server"
 
@@ -27,6 +30,8 @@ fi
 
 docker build \
     -t open.mp/run:ubuntu-${ubuntu_version} \
+    --platform "$container_platform" \
+    --build-arg TARGET_CONTAINER_PLATFORM=${container_platform} \
     run_ubuntu-${ubuntu_version}/ \
 ;
 docker_error=$?
@@ -42,6 +47,7 @@ fi
 docker run \
     --rm \
     -ti \
+    --platform "$container_platform" \
     -w /data \
     -v $PWD/data:/data \
     -p 7777:7777 \
