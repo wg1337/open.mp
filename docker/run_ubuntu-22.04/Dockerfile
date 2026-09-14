@@ -9,6 +9,8 @@ RUN apt-get update && \
         tzdata \
         openssl \
         python3 \
+        libatomic1 \
+        libstdc++6 \
         libssl3 && \
     rm -rf /var/lib/apt/lists/* && \
     useradd -m user
@@ -21,16 +23,6 @@ RUN case "$TARGET_CONTAINER_PLATFORM" in \
             apt-get install -y --no-install-recommends \
                 libstdc++6:i386 \
                 libssl3:i386 \
-            ;; \
-        linux/arm|linux/arm64) \
-            apt-get update && \
-            apt-get install -y --no-install-recommends \
-                libstdc++6 \
-                libatomic1 \
-            ;; \
-        *) \
-            echo "Unsupported TARGET_CONTAINER_PLATFORM: $TARGET_CONTAINER_PLATFORM" >&2 \
-            exit 1 \
             ;; \
     esac && \
     rm -rf /var/lib/apt/lists/*
